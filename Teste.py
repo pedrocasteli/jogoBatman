@@ -2,6 +2,7 @@ import pygame
 import random
 
 pygame.init()
+
 altura = 300
 largura = 800
 tamanho = (largura, altura)
@@ -30,19 +31,19 @@ missileSound = pygame.mixer.Sound("assets/missile.wav")
 missileSound.set_volume(0.1)
 
 
-def dead(pontos):
-    gameDisplay.blit(bg_destroy, (0, 0))
-    pygame.mixer.music.stop()
-    pygame.mixer.Sound.play(explosaoSound)
-    fonte = pygame.font.Font("freesansbold.ttf", 50)
-    texto = fonte.render("Você Perdeu com "+str(pontos) +
-                         " pontos!", True, black)
-    gameDisplay.blit(texto, (50, 100))
-    fonteContinue = pygame.font.Font("freesansbold.ttf", 25)
-    textoContinue = fonteContinue.render("press enter to restart", True, white)
-    gameDisplay.blit(textoContinue, (50, 200))
+# def dead(pontos):
+#     gameDisplay.blit(bg_destroy, (0, 0))
+#     pygame.mixer.music.stop()
+#     pygame.mixer.Sound.play(explosaoSound)
+#     fonte = pygame.font.Font("freesansbold.ttf", 50)
+#     texto = fonte.render("Você Perdeu com "+str(pontos) +
+#                          " pontos!", True, black)
+#     gameDisplay.blit(texto, (50, 100))
+#     fonteContinue = pygame.font.Font("freesansbold.ttf", 25)
+#     textoContinue = fonteContinue.render("press enter to restart", True, white)
+#     gameDisplay.blit(textoContinue, (50, 200))
 
-    pygameDisplay.update()
+#     pygameDisplay.update()
 
 
 def jogo():
