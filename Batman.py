@@ -38,6 +38,7 @@ pygameDisplay = pygame.display
 pygameDisplay.set_caption("Dark Knight do Pedrinho")
 bg = pygame.image.load("./assets/fundo.jpg")
 bg_destroy = pygame.image.load("assets/bg_gameover.jpg")
+bg_destroy = pygame.transform.scale(bg_destroy, (950, 468))
 
 gameDisplay = pygame.display.set_mode(tamanho)
 gameEvents = pygame.event
@@ -46,9 +47,23 @@ clock = pygame.time.Clock()
 gameIcon = pygame.image.load("./assets/bman.png")
 pygameDisplay.set_icon(gameIcon)
 
-pink = (255, 125, 198)
 black = (0, 0, 0)
 white = (255, 255, 255)
+
+
+def gameover(pontos):
+    gameDisplay.blit(bg_destroy, (0, 0))
+    pygame.mixer.music.stop()
+    fonte = pygame.font.Font("freesansbold.ttf", 30)
+    texto = fonte.render("Você perdeu com " +
+                         str(pontos) + " pontos!", True, white)
+    gameDisplay.blit(texto, (10, 10))
+    fonteContinue = pygame.font.Font("freesansbold.ttf", 20)
+    textoContinue = fonteContinue.render(
+        "Pressione Enter para recomeçar...", True, white)
+    gameDisplay.blit(textoContinue, (10, 448))
+
+    pygameDisplay.update()
 
 
 def jogo():
@@ -62,18 +77,18 @@ def jogo():
     movimentoXBatman = 0
     movimentoYBatman = 0
     pontos = 0
-    carta = pygame.image.load("assets/carta_coringa.jpg")
-    carta = pygame.transform.scale(carta, (60, 100))
-    carta = pygame.transform.flip(carta, True, False)
+    coringa = pygame.image.load("assets/coringa.png")
+    coringa = pygame.transform.scale(coringa, (100, 160))
+    coringa = pygame.transform.flip(coringa, True, False)
     batman = pygame.image.load("assets/batman.png")
-    batman = pygame.transform.scale(batman, (180, 250))
+    batman = pygame.transform.scale(batman, (130, 180))
     pygame.mixer.music.load("assets/trilha.mp3")
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(0.1)
-    larguraBatman = 10
-    alturaBatman = 10
-    larguraCarta = 10
-    alturaCarta = 10
+    larguraBatman = 130
+    alturaBatman = 180
+    larguraCoringa = 100
+    alturaCoringa = 160
     limiar = 28
     velocidadeBatman = 10
 
@@ -114,46 +129,47 @@ def jogo():
 
             gameDisplay.blit(bg, (0, 0))
             gameDisplay.blit(batman, (posicaoXBatman, posicaoYBatman))
-            gameDisplay.blit(carta, (movimentoX, movimentoY))
+            gameDisplay.blit(coringa, (movimentoX, movimentoY))
 
             if direcao == True:
-                if movimentoX <= 800 - 150:
+                if movimentoX <= 950 - 100:
                     movimentoX = movimentoX + velocidade
                 else:
                     direcao = False
                     pontos = pontos + 1
-                    movimentoY = random.randrange(0, altura)
+                    movimentoY = random.randrange(0, altura - alturaCoringa)
                     velocidade = velocidade + 1
-                    carta = pygame.transform.flip(carta, True, False)
+                    coringa = pygame.transform.flip(coringa, True, False)
             else:
                 if movimentoX >= 0:
                     movimentoX = movimentoX - velocidade
                 else:
                     direcao = True
                     pontos += 1
-                    movimentoY = random.randrange(0, altura)
+                    movimentoY = random.randrange(0, altura - alturaCoringa)
                     velocidade = velocidade + 1
-                    carta = pygame.transform.flip(carta, True, False)
+                    coringa = pygame.transform.flip(coringa, True, False)
 
             fonte = pygame.font.Font('freesansbold.ttf', 20)
             texto = fonte.render("Pontos: " + str(pontos), True, white)
-            gameDisplay.blit(texto, (20, 280))
+            gameDisplay.blit(texto, (20, 428))
 
-            pixelYCarta = list(range(movimentoY, movimentoY + alturaCarta + 1))
-            pixelXCarta = list(
-                range(movimentoX, movimentoX + larguraCarta + 1))
+            pixelYCoringa = list(
+                range(movimentoY, movimentoY + alturaCoringa + 1))
+            pixelXCoringa = list(
+                range(movimentoX, movimentoX + larguraCoringa + 1))
 
             pixelYBatman = list(
                 range(posicaoYBatman, posicaoYBatman + alturaBatman + 1))
             pixelXBatman = list(
                 range(posicaoXBatman, posicaoXBatman + larguraBatman + 1))
 
-            colisaoY = list(set(pixelYCarta) & set(pixelYBatman))
-            colisaoX = list(set(pixelXCarta) & set(pixelXBatman))
+            colisaoY = list(set(pixelYCoringa) & set(pixelYBatman))
+            colisaoX = list(set(pixelXCoringa) & set(pixelXBatman))
             if len(colisaoY) > limiar:
                 if len(colisaoX) > limiar:
                     jogando = False
-                    # dead(pontos)
+                    gameover(pontos)
 
         pygameDisplay.update()
         clock.tick(60)
