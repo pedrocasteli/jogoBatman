@@ -1,6 +1,6 @@
 __pycache__/
 ./Teste.py
 ./historico.txt
-./dist/
-./build/exe.win-amd64-3.10/lib/
-./build/exe.win-amd64-3.10/historico.txt
+dist/
+build/exe.win-amd64-3.10/lib/
+build/exe.win-amd64-3.10/historico.txt
